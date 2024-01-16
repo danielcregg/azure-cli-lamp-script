@@ -28,11 +28,13 @@ az vm create \
   --query 'name' -o tsv &&
 echo New VM has been created...
 
-echo open required ports on new VM...
+echo Opening required ports on new VM...
 az vm open-port \
   --resource-group myResourceGroup \
   --name myVM \
   --port 80,443,3389 &&
+  
+echo SSHing into new VM with IP $(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv) ...
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv)      \
 '\
 echo Installing LAMP... &&
