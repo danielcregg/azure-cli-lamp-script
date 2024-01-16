@@ -1,9 +1,8 @@
 echo Deleting old Azure resource group...
 az account set --subscription 'Azure for Students'
 if [ "$(az group exists --name myResourceGroup)" = "true" ]; then 
-  az group delete --name myResourceGroup --yes --no-wait; 
   echo Waiting for old Azure Resource Group to be deleted...
-  az group wait --deleted --name myResourceGroup;
+  az group delete --name myResourceGroup --yes; 
   echo Old resource group has been deleted.
 fi
 
@@ -27,8 +26,7 @@ az vm create \
   --admin-password login2VM1234 \
   --security-type TrustedLaunch \
   --query 'name' -o tsv &&
-echo Waiting for new VM to the created...
-az vm wait --created -g myResourceGroup -n myVM
+echo New VM has been created...
 
 echo open required ports on new VM...
 az vm open-port \
