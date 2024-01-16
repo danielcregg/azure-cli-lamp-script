@@ -24,8 +24,7 @@ az vm create \
   --generate-ssh-keys \
   --admin-username azureuser \
   --admin-password login2VM1234 \
-  --security-type TrustedLaunch \
-  --query 'name' -o tsv &&
+  --security-type TrustedLaunch &&
 echo New VM has been created...
 
 echo Opening required ports on new VM...
