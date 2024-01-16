@@ -12,7 +12,7 @@ az group create \
   --location northeurope \
   --subscription 'Azure for Students' \
   --query 'name' -o tsv &&
-echo Creating new VM called...
+echo Creating a new VM...
 az vm create \
   --resource-group myResourceGroup \
   --name myVM \
