@@ -42,7 +42,7 @@ sudo a2enconf adminer &&
 sudo systemctl reload apache2 &&
 sudo mysql -Bse "CREATE USER IF NOT EXISTS admin@localhost IDENTIFIED BY \"password\";GRANT ALL PRIVILEGES ON *.* TO admin@localhost;FLUSH PRIVILEGES;"
 
-echo install phpmyadmin &&
+echo Install phpmyadmin... &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" # Select Web Server &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true" # Configure database for phpmyadmin with dbconfig-common &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password 'password'" # Set MySQL application password for phpmyadmin &&
@@ -50,7 +50,7 @@ sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm pass
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
 DEBIAN_FRONTEND=noninteractive sudo apt -qq install phpmyadmin &&
 
-echo Enable root login for SFTP...
+echo Enabling root login for SFTP...
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
 sudo echo -e "login2VM1234\nlogin2VM1234" | sudo passwd root &&
 sudo service sshd restart
