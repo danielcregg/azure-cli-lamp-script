@@ -37,7 +37,7 @@ sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php ind
 sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
 echo Installing Adminer... &&
-sudo apt -qq install adminer && 
+sudo apt -qy install adminer && 
 sudo a2enconf adminer && 
 sudo systemctl reload apache2 &&
 sudo mysql -Bse "CREATE USER IF NOT EXISTS admin@localhost IDENTIFIED BY \"password\";GRANT ALL PRIVILEGES ON *.* TO admin@localhost;FLUSH PRIVILEGES;"
@@ -48,7 +48,7 @@ sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean 
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password 'password'" # Set MySQL application password for phpmyadmin &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password 'password'" # Confirm application password &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
-DEBIAN_FRONTEND=noninteractive sudo apt -qq install phpmyadmin &&
+DEBIAN_FRONTEND=noninteractive sudo apt -qy install phpmyadmin &&
 
 echo Enabling root login for SFTP...
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
