@@ -14,7 +14,7 @@ az group create \
 az vm create \
   --resource-group myResourceGroup \
   --name myVM \
-  --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest \
+  --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts-gen2:latest \
   --size Standard_B1s \
   --os-disk-size-gb 64 \
   --public-ip-sku Standard \
@@ -22,8 +22,7 @@ az vm create \
   --generate-ssh-keys \
   --admin-username azureuser \
   --admin-password login2VM1234 \
-  --security-type TrustedLaunch \
-  --generation 2 &&
+  --security-type TrustedLaunch &&
 az vm wait --created -g myResourceGroup -n myVM
 az vm open-port \
   --resource-group myResourceGroup \
