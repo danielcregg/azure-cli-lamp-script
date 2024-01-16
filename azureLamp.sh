@@ -32,30 +32,31 @@ echo Opening required ports on new VM...
 az vm open-port \
   --resource-group myResourceGroup \
   --name myVM \
-  --port 80,443,3389 &&
+  --port 80,443,3389 > /dev/null 2>&1
   
 echo SSHing into new VM with IP $(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv) ...
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv)      \
 '\
 echo Installing LAMP... &&
-sudo apt update -qq && sudo apt install -qq -f apache2 mysql-server php -y &&
+sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
 echo Configuring LAMP... &&
 sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
 sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
-echo Installing Adminer... &&
-sudo apt -qy install adminer && 
+echo Installing Adminer silently... &&
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
+echo Configuring Andminer &&
 sudo a2enconf adminer && 
 sudo systemctl reload apache2 &&
 sudo mysql -Bse "CREATE USER IF NOT EXISTS admin@localhost IDENTIFIED BY \"password\";GRANT ALL PRIVILEGES ON *.* TO admin@localhost;FLUSH PRIVILEGES;"
 
-echo Install phpmyadmin... &&
+echo Install phpmyadmin silently... &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" # Select Web Server &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true" # Configure database for phpmyadmin with dbconfig-common &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password 'password'" # Set MySQL application password for phpmyadmin &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password 'password'" # Confirm application password &&
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
-DEBIAN_FRONTEND=noninteractive sudo apt -qy install phpmyadmin &&
+sudo DEBIAN_FRONTEND=noninteractive apt install phpmyadmin -qq -y &&
 
 echo Enabling root login for SFTP...
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
