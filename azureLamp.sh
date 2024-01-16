@@ -22,7 +22,8 @@ az vm create \
   --generate-ssh-keys \
   --admin-username azureuser \
   --admin-password login2VM1234 \
-  --security-type TrustedLaunch &&
+  --security-type TrustedLaunch \
+  --generation 2 &&
 az vm wait --created -g myResourceGroup -n myVM
 az vm open-port \
   --resource-group myResourceGroup \
