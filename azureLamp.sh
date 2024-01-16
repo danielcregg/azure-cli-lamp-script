@@ -30,8 +30,8 @@ az vm open-port \
   --port 80,443,3389 &&
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv)      \
 '\
-echo Install LAMP &&
-sudo apt update -qq && sudo apt-get install -qq -f apache2 mysql-server php &&
+echo Installing LAMP &&
+sudo apt update -qq && sudo apt install -qq -f apache2 mysql-server php &&
 sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
 sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
