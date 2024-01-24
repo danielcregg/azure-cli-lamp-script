@@ -17,7 +17,7 @@ if [ "$l_flag" = "true" ]; then
   echo Installing LAMP
 fi
 
-
+exit 0
 
 
 echo Deleting old Azure resource group...
