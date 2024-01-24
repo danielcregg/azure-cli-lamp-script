@@ -15,7 +15,7 @@ az group create \
 echo Creating a new VM...
 az vm create \
   --resource-group myResourceGroup \
-  --name myVM \
+  --name 'LAMP Server Auto' \
   --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts-gen2:latest \
   --size Standard_B1s \
   --os-disk-size-gb 64 \
