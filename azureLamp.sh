@@ -1,20 +1,20 @@
 echo Deleting old Azure resource group...
 az account set --subscription 'Azure for Students'
-if [ "$(az group exists --name myResourceGroup)" = "true" ]; then 
+if [ "$(az group exists --name LAMPResourceGroupAuto)" = "true" ]; then 
   echo Waiting for old Azure Resource Group to be deleted...
-  az group delete --name myResourceGroup --yes; 
+  az group delete --name LAMPResourceGroupAuto --yes; 
   echo Old resource group has been deleted.
 fi
 
 echo Creating a new resource group called...
 az group create \
-  --name myResourceGroup \
+  --name LAMPResourceGroupAuto \
   --location northeurope \
   --subscription 'Azure for Students' \
   --query 'name' -o tsv &&
 echo Creating a new VM...
 az vm create \
-  --resource-group myResourceGroup \
+  --resource-group LAMPResourceGroupAuto \
   --name LAMPServerAuto \
   --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts-gen2:latest \
   --size Standard_B1s \
@@ -29,11 +29,11 @@ echo New VM has been created...
 
 echo Opening required ports on new VM...
 az vm open-port \
-  --resource-group myResourceGroup \
-  --name myVM \
+  --resource-group LAMPResourceGroupAuto \
+  --name LAMPServerAuto \
   --port 80,443,3389 > /dev/null 2>&1
   
-echo SSHing into new VM with IP $(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv) ...
+echo SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) ...
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g myResourceGroup -n myVM --query publicIps -o tsv)      \
 '\
 echo Installing LAMP... &&
