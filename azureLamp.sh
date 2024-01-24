@@ -1,3 +1,25 @@
+#!/bin/bash
+
+
+# Initialize a variable to store the flag value
+l_flag='false'
+
+# Use getopts to parse the flag
+while getopts 'l' flag; do
+  case "$flag" in
+    l) l_flag='true' ;; # Set the variable to true if -l is supplied
+    *) echo "Usage: $0 [-l]" # Print usage message for invalid flag
+       exit 1 ;;
+  esac
+done
+
+if [ "$l_flag" = "true" ]; then
+  echo Installing LAMP... &&
+fi
+
+
+
+
 echo Deleting old Azure resource group...
 az account set --subscription 'Azure for Students'
 if [ "$(az group exists --name LAMPResourceGroupAuto)" = "true" ]; then 
