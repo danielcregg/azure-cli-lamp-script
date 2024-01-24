@@ -14,7 +14,7 @@ while getopts 'l' flag; do
 done
 
 if [ "$l_flag" = "true" ]; then
-  echo Installing LAMP... &&
+  echo Installing LAMP
 fi
 
 
