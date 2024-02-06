@@ -17,7 +17,8 @@ az vm create \
   --resource-group LAMPResourceGroupAuto \
   --name LAMPServerAuto \
   --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts-gen2:latest \
-  --size Standard_B1s \
+#  --size Standard_B1s \
+  --size Standard_B2s \
   --os-disk-size-gb 64 \
   --public-ip-sku Standard \
   --authentication-type all \
