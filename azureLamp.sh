@@ -45,8 +45,20 @@ sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo ech
 echo "Enabling root login for SFTP..." &&
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
 sudo echo -e "tester\ntester" | sudo passwd root &&
-sudo systemctl restart sshd
+sudo systemctl restart sshd &&
 
+<<<<<<< HEAD
+=======
+echo "Enable Vscode tunnel login via browser..." && 
+sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg &&
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ &&
+sudo sh -c "echo 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main' > /etc/apt/sources.list.d/vscode.list" &&
+sudo apt update -qq -y &&
+sudo apt install code -qq -y &&
+code --install-extension ms-vscode.remote-server
+#sudo code tunnel
+
+>>>>>>> c371be4 (Enable Vscode tunnel login via browser and install ms-vscode.remote-server extension)
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
 #echo Configuring Andminer &&
@@ -72,6 +84,7 @@ echo Staying logged into this new VM
 echo Done.
 bash -l
 '
+<<<<<<< HEAD
 
 #echo "Enable Vscode tunnel login via browser..." && 
 #sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
@@ -81,3 +94,5 @@ bash -l
 #sudo apt install code -qq -y
 #code --install-extension ms-vscode.remote-server
 #sudo code tunnel
+=======
+>>>>>>> c371be4 (Enable Vscode tunnel login via browser and install ms-vscode.remote-server extension)
