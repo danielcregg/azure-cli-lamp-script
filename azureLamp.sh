@@ -47,7 +47,7 @@ echo "Enabling root login for SFTP..." &&
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
 sudo echo -e "tester\ntester" | sudo passwd root &&
 sudo systemctl restart sshd
-'
+
 #echo "Enable Vscode tunnel login via browser..." && 
 #sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 #sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -56,14 +56,14 @@ sudo systemctl restart sshd
 #sudo apt install code -qq -y
 #code --install-extension ms-vscode.remote-server
 #sudo code tunnel
-#'
+
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
 #echo Configuring Andminer &&
 #sudo a2enconf adminer && 
 #sudo systemctl reload apache2 &&
 #sudo mysql -Bse "CREATE USER IF NOT EXISTS admin@localhost IDENTIFIED BY \"password\";GRANT ALL PRIVILEGES ON *.* TO admin@localhost;FLUSH PRIVILEGES;"
-#'
+
 #echo Install phpmyadmin silently... &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" # Select Web Server &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true" # Configure database for phpmyadmin with dbconfig-common &&
@@ -71,7 +71,7 @@ sudo systemctl restart sshd
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password 'password'" # Confirm application password &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
 #sudo DEBIAN_FRONTEND=noninteractive apt install phpmyadmin -qq -y &&
-#'
+
 printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)\e[0m - You should see the Apache default page.\n"
 printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/info.php\e[0m - You should see a PHP info page.\n"
 printf "\nClick on this link to download WinSCP \e[3;4;33mhttps://dcus.short.gy/downloadWinSCP\e[0m - Note: User = root and password = tester\n"
@@ -81,6 +81,3 @@ printf "\nClick on this link to download WinSCP \e[3;4;33mhttps://dcus.short.gy/
 #echo Staying logged into this new VM
 bash -l
 '
-
-
-
