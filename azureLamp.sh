@@ -34,22 +34,36 @@ az vm open-port \
   --name LAMPServerAuto \
   --port 80,443,3389 > /dev/null 2>&1
   
-echo SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) ...
+echo SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
-#'\
-#echo Installing LAMP... &&
-#sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
-#echo Configuring LAMP... &&
-#sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
-#sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+'\
+echo "Installing LAMP..." &&
+sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
+echo Configuring LAMP... &&
+sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
+sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
+echo "Enabling root login for SFTP..." &&
+sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
+sudo echo -e "tester\ntester" | sudo passwd root &&
+sudo systemctl restart sshd
+'
+#echo "Enable Vscode tunnel login via browser..." && 
+#sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+#sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+#sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+#apt update -qq -y
+#sudo apt install code -qq -y
+#code --install-extension ms-vscode.remote-server
+#sudo code tunnel
+'
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
 #echo Configuring Andminer &&
 #sudo a2enconf adminer && 
 #sudo systemctl reload apache2 &&
 #sudo mysql -Bse "CREATE USER IF NOT EXISTS admin@localhost IDENTIFIED BY \"password\";GRANT ALL PRIVILEGES ON *.* TO admin@localhost;FLUSH PRIVILEGES;"
-
+#'
 #echo Install phpmyadmin silently... &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" # Select Web Server &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true" # Configure database for phpmyadmin with dbconfig-common &&
@@ -57,12 +71,7 @@ ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g LAMPResourceGroup
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password 'password'" # Confirm application password &&
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
 #sudo DEBIAN_FRONTEND=noninteractive apt install phpmyadmin -qq -y &&
-
-#echo Enabling root login for SFTP...
-#sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
-#sudo echo -e "login2VM1234\nlogin2VM1234" | sudo passwd root &&
-#sudo service sshd restart
-
+#'
 #printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)\e[0m - You should see the Apache default page.\n"
 #printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/info.php\e[0m - You should see a PHP info page.\n"
 #printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/adminer/?username=admin\e[0m - You should see the Adminer Login page. Username is admin and password is password. Leave Database empty.\n"
@@ -71,12 +80,3 @@ ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g LAMPResourceGroup
 #echo Staying logged into this new VM
 #bash -l
 #'
-
-# Increase you VM size to B2s
-#sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-#sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-#sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-#sudo apt update
-#sudo apt install code
-#code --install-extension ms-vscode.remote-server
-#sudo code tunnel
