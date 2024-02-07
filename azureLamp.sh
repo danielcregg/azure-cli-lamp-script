@@ -33,7 +33,7 @@ az vm open-port \
   --name LAMPServerAuto \
   --port 80,443,3389 > /dev/null 2>&1 \
   
-echo SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
+echo "SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv)" &&
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
 '
 echo "Installing LAMP..." &&
