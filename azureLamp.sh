@@ -47,10 +47,6 @@ sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
 sudo echo -e "tester\ntester" | sudo passwd root &&
 sudo systemctl restart sshd
 
-#echo "Enable Vscode tunnel login via browser..." && 
-#sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-#sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
 #echo Configuring Andminer &&
