@@ -17,7 +17,6 @@ az vm create \
   --resource-group LAMPResourceGroupAuto \
   --name LAMPServerAuto \
   --image Canonical:0001-com-ubuntu-server-jammy:22_04-lts-gen2:latest \
-#  --size Standard_B1s \ # Free low resource VM
   --size Standard_B2s \
   --os-disk-size-gb 64 \
   --public-ip-sku Standard \
@@ -32,11 +31,11 @@ echo Opening required ports on new VM...
 az vm open-port \
   --resource-group LAMPResourceGroupAuto \
   --name LAMPServerAuto \
-  --port 80,443,3389 > /dev/null 2>&1
+  --port 80,443,3389 > /dev/null 2>&1 \
   
 echo SSHing into new VM with IP $(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
 ssh -t -oStrictHostKeyChecking=no azureuser@$(az vm show -d -g LAMPResourceGroupAuto -n LAMPServerAuto --query publicIps -o tsv) \
-'\
+'
 echo "Installing LAMP..." &&
 sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
 echo Configuring LAMP... &&
@@ -51,11 +50,6 @@ sudo systemctl restart sshd
 #echo "Enable Vscode tunnel login via browser..." && 
 #sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 #sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-#sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-#apt update -qq -y
-#sudo apt install code -qq -y
-#code --install-extension ms-vscode.remote-server
-#sudo code tunnel
 
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
@@ -72,12 +66,22 @@ sudo systemctl restart sshd
 #sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true" &&
 #sudo DEBIAN_FRONTEND=noninteractive apt install phpmyadmin -qq -y &&
 
-printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)\e[0m - You should see the Apache default page.\n"
-printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/info.php\e[0m - You should see a PHP info page.\n"
+printf "\nClick on this link to open the default Apache webpage: \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)\e[0m\n"
+printf "\nClick on this link to check php is correctly installed: \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/info.php\e[0m\n"
 printf "\nClick on this link to download WinSCP \e[3;4;33mhttps://dcus.short.gy/downloadWinSCP\e[0m - Note: User = root and password = tester\n"
 #printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/adminer/?username=admin\e[0m - You should see the Adminer Login page. Username is admin and password is password. Leave Database empty.\n"
 #printf "\nOpen an internet browser (e.g. Chrome) and go to \e[3;4;33mhttp://$(dig +short myip.opendns.com @resolver1.opendns.com)/phpmyadmin\e[0m - You should see the phpMyAdmin login page. admin/password\n"
 #printf "\nOpen an internet browser (e.g. Edge) and go to \e[3;4;33mhttps://tinyurl.com/47k4bwcr\e[0m - This will download WinSCP. Connect to your VM --> Hostname = $(dig +short myip.opendns.com @resolver1.opendns.com), User = root, Password = login2VM1234.\n"
-#echo Staying logged into this new VM
+echo Staying logged into this new VM
+echo Done.
 bash -l
 '
+
+#echo "Enable Vscode tunnel login via browser..." && 
+#sudo wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+#sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+#sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+#apt update -qq -y
+#sudo apt install code -qq -y
+#code --install-extension ms-vscode.remote-server
+#sudo code tunnel
