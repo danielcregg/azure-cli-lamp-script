@@ -41,6 +41,8 @@ sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
 echo Configuring LAMP... &&
 sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
 sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php &&
+sudo wget https://raw.githubusercontent.com/danielcregg/simple-php-website/main/index.php -P /var/www/html/ &&
+sudo rm -rf /var/www/html/index.html &&
 sudo systemctl restart apache2
 
 echo "Enabling root login for SFTP..." &&
