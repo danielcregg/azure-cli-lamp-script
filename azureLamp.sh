@@ -40,7 +40,8 @@ echo "Installing LAMP..." &&
 sudo apt update -qq -y && sudo apt install apache2 mysql-server php -qq -f -y &&
 echo Configuring LAMP... &&
 sudo sed -i.bak -e "s/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g" /etc/apache2/mods-enabled/dir.conf &&
-sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+sudo touch /var/www/html/info.php;sudo chmod 666 /var/www/html/info.php;sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php &&
+sudo systemctl restart apache2
 
 echo "Enabling root login for SFTP..." &&
 sudo sed -i "/PermitRootLogin/c\PermitRootLogin yes" /etc/ssh/sshd_config &&
