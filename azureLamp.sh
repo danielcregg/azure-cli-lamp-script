@@ -54,7 +54,7 @@ sudo sh -c "echo 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.micr
 sudo apt update -qq -y &&
 sudo apt install code -qq -y &&
 code --install-extension ms-vscode.remote-server
-nohup sudo code tunnel &
+#nohup sudo code tunnel &
 
 #echo Installing Adminer silently... &&
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq -y adminer &&
